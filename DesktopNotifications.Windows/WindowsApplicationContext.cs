@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
@@ -33,19 +33,6 @@ namespace DesktopNotifications.Windows
             var aumid = appUserModelId ?? appName; //TODO: Add seeded bits to avoid collisions?
 
             SetCurrentProcessExplicitAppUserModelID(aumid);
-
-            using var shortcut = new ShellLink
-            {
-                TargetPath = mainModule.FileName,
-                Arguments = string.Empty,
-                AppUserModelID = aumid
-            };
-
-            var appData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-            var startMenuPath = Path.Combine(appData, @"Microsoft\Windows\Start Menu\Programs");
-            var shortcutFile = Path.Combine(startMenuPath, $"{appName}.lnk");
-
-            shortcut.Save(shortcutFile);
 
             return new WindowsApplicationContext(appName, aumid);
         }
